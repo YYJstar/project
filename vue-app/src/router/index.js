@@ -15,6 +15,11 @@ const router = new Router({
       name: "manageimg",
       component: () => import("../views/manage/ManageImg.vue"),
     },
+    {
+      path: "/main",
+      name: "mainimg",
+      component: () => import("../views/main/mainImg.vue"),
+    },
   ],
 });
 

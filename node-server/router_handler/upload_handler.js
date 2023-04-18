@@ -12,14 +12,15 @@ exports.upload = (req, res) => {
     return;
   }
   const files = req.files;
-  const sql = "INSERT INTO images (url, status) VALUES (?, ?)";
+  const sql = "INSERT INTO images (url, status,top) VALUES (?, ?,?)";
   let urls = [];
   const status = 0;
+  const top = 0;
   for (let i = 0; i < files.length; i++) {
     //将上传的图片存入mysql数据库
     //这里有个坑，如果URL路径带public的话，会找不到静态资源，需要把public去掉
     const imgUrl = `http://localhost:3000/images/${files[i].filename}`;
-    db.query(sql, [imgUrl, status], (err, result) => {
+    db.query(sql, [imgUrl, status, top], (err, result) => {
       if (err) {
         console.log(err);
         res.status(500).send({ error: "Database error" });

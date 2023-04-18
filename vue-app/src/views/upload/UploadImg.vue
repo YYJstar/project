@@ -8,12 +8,16 @@
       :file-list="fileList"
       list-type="picture"
       :auto-upload="false"
+      v-loading.fullscreen.lock="loading"
+      element-loading-text="上传中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0,0,0,0.1)"
     >
       <el-button size="small" type="primary">点击上传</el-button>
     </el-upload>
     <br />
     <el-button size="small" type="primary" @click="uploadImgs">提交</el-button>
-    <!-- //预览 -->
+    <!--预览 -->
     <el-dialog v-model="dialogVisible">
       <img :src="dialogImgUrl" alt="" style="width: 50%" />
     </el-dialog>
@@ -27,18 +31,20 @@ export default {
       fileList: [],
       dialogImgUrl: "",
       dialogVisible: false,
+      loading: false,
     };
   },
   methods: {
     handleChange(file, fileList) {
       this.fileList = fileList;
     },
-    //待优化
-    handleSuccess(res, file) {
-      this.fileList.push({
-        name: file.name,
-        url: res.url,
-      });
+    handleSuccess(res, file, fileList) {
+      // this.fileList.push({
+      //   name: file.name,
+      //   url: res.url,
+      // });
+      this.fileList = fileList;
+      this.loading = false;
     },
     //待优化
     handlePreview(file) {
@@ -46,6 +52,7 @@ export default {
       this.dialogVisible = true;
     },
     uploadImgs() {
+      this.loading = true;
       let formData = new FormData();
       // console.log("fileList:", this.fileList);
       this.fileList.forEach((file) => {
@@ -59,8 +66,21 @@ export default {
           },
         })
         .then((res) => {
+          //上传成功
           console.log(res);
           console.log("Images saved successfully");
+          this.$confirm("是否继续上传?", "提示", {
+            confirmButtonText: "继续上传",
+            cancelButtonText: "返回列表页",
+            type: "warning",
+          })
+            .then(() => {
+              this.fileList = [];
+              this.loading = false;
+            })
+            .catch(() => {
+              this.$router.push("/images");
+            });
         })
         .catch((err) => {
           console.error(err);
