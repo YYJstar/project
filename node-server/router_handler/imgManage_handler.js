@@ -47,6 +47,8 @@ exports.getImgs = (req, res) => {
           data: imagesList,
           total: total,
         });
+        //设置图片缓存时间
+        res.setHeader("Cache-Control", "max-age=300"); // 设置缓存时间为300秒（5分钟）
       });
     }
   });

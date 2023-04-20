@@ -277,21 +277,21 @@ export default {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 90%;
+  width: auto;
   height: 70%;
   transform: translate(-50%, -50%);
 }
 
 .left {
   position: absolute;
-  left: 15px;
+  left: 10px;
   top: 50%;
   transform: translate(0, -50%);
 }
 
 .right {
   position: absolute;
-  right: 15px;
+  right: 10px;
   top: 50%;
   transform: translate(0, -50%);
 }
